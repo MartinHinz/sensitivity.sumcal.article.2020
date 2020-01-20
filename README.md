@@ -6,7 +6,7 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MartinHinz/sensitivity.sumcal.article.2020/master?urlpath=rstudio)
 [![Travis-CI Build
 Status](https://travis-ci.org/MartinHinz/sensitivity.sumcal.article.2020.svg?branch=master)](https://travis-ci.org/MartinHinz/sensitivity.sumcal.article.2020)
-\[![codecov](https://codecov.io/github/MartinHinz/sensitivity.sumcal.article.2020/branch/master/graphs/badge.svg)\]
+\[![codecov](https://codecov.io/github/MartinHinz/sensitivity.sumcal.article.2020/branch/master/graphs/badge.svg)(<https://codecov.io/github/MartinHinz/sensitivity.sumcal.article.2020>)\]
 
 This repository contains the data and code for the paper:
 
