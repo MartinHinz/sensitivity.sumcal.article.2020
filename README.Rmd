@@ -21,11 +21,11 @@ Title <- "Sensitivity of Radiocarbon Sum Calibration"
 
 This repository contains the data and code for the paper:
 
-> Authors, (YYYY). _`r Title`_. Name of journal/book <https://doi.org/xxx/xxx>
+> Hinz, (2020). _`r Title`_. Zenodo <https://doi.org/10.5281/zenodo.3613674>
 
-Our pre-print is online here:
+The pre-print is online here:
 
-> Authors, (YYYY). _`r Title`_. Name of journal/book, Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://doi.org/xxx/xxx>
+> Hinz, (2020). _`r Title`_. SocArXiv, Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://osf.io/preprints/socarxiv/bgvk6>
 
 ### Abstract
 
