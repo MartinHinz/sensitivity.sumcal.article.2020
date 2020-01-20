@@ -1,0 +1,17 @@
+# Build our R pkg on Travis and check code coverage
+
+env:
+  global:
+  - REPO=$DOCKER_USER/sensitivity.sumcal.article.2020
+
+sudo: required
+
+warnings_are_errors: true
+
+language: generic
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
