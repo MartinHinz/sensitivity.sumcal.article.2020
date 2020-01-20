@@ -1,7 +1,6 @@
 # Build our R pkg on Travis and check code coverage
 
-language: R
-sudo: false
+language: r
 cache: packages
 r_packages:
   - covr
