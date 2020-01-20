@@ -61,13 +61,13 @@ remotes::install_github("MartinHinz/sensitivity.sumcal.article.2020")
 
 ### Overview of contents:
 
-This repository contains text, code and data for the paper. The `analysis` directory contains `code` and `data` to reproduce the preparations, calculations and figure renderings. The `article` directory contains the text for the paper in *.Rmd* format.
+This repository contains text, code and data for the paper. The `analysis` directory contains `paper` and `data` to reproduce the preparations, calculations and figure renderings. The `paper` directory contains the text for the paper in *.Rmd* format, and rendered versions as pdf, html and docx. It also contains a directory `result_data` which holds the results from the submitted version of the paper.
 
 ### How to reproduce:
 
 As the data and code in this repository are complete and self-contained, it can be reproduced with any R environment (\> version 3.5.0). The necessary package dependencies are documented in the `DESCRIPTION` file and can be installed manually or automatically with `devtools::install()`.
 
-The simulation can then be run using the run_simulation() command. The total run time was 94480 seconds or 26 hours and 15 minutes (using parallel computing on 6 cores of an Intel(R) Xeon(R) CPU E3-1240 v5 at 3.50GHz with 16 GB RAM).
+The simulation can then be run using the `run_simulation()` command. The total run time was 94480 seconds or 26 hours and 15 minutes (using parallel computing on 6 cores of an Intel(R) Xeon(R) CPU E3-1240 v5 at 3.50GHz with 16 GB RAM).
 
 ### Licenses
 
