@@ -1,0 +1,37 @@
+Package: sensitivity.sumcal.article.2020
+Title: Sensitivity of Radiocarbon Sum Calibration
+Version: 0.0.0.9000
+Authors@R:
+    person(given = "Martin",
+           family = "Hinz",
+           role = c("aut", "cre"),
+           email = "martin.hinz@iaw.unibe.ch")
+Description: A research compendium for ‘Sensitivity of Radiocarbon Sum Calibration’.
+Depends: R (>= 3.5.0)
+License: MIT + file LICENSE
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/MartinHinz/sensitivity.sumcal.article.2020
+BugReports: https://github.com/MartinHinz/sensitivity.sumcal.article.2020/issues
+Imports:
+    DiagrammeR,
+    magrittr,
+    flextable,
+    here,
+    oxcAAR,
+    tibble,
+    broom,
+    doParallel,
+    foreach,
+    ggplot2,
+    ggthemes,
+    grid,
+    reshape2,
+    scales,
+    Rdpack
+RdMacros: Rdpack
+Suggests:
+    bookdown,
+    testthat
+RoxygenNote: 7.0.2

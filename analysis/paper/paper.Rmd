@@ -1,0 +1,388 @@
+---
+title: "Sensitivity of Radiocarbon Sum Calibration"
+author:
+  - Martin Hinz:
+      email: martin.hinz@iaw.unibe.ch
+      institute: [iaw]
+      correspondence: true
+institute:
+  - iaw: Insitut für Archäologische Wissenschaften, Universität Bern
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::html_document2:
+    fig_caption: yes
+    reference_docx: ../templates/template.docx
+  bookdown::word_document2:
+    smart: yes
+    reference_docx: ../templates/template.docx
+    pandoc_args:
+      - '--lua-filter=scholarly-metadata.lua'
+      - '--lua-filter=author-info-blocks.lua'
+  bookdown::pdf_document2:
+    toc: no
+    smart: yes
+    includes:
+        in_header: preamble.tex
+    pandoc_args:
+      - '--lua-filter=scholarly-metadata.lua'
+      - '--lua-filter=author-info-blocks.lua'
+bibliography: references.bib
+highlights: 'Simulations used to evaluate the possibility of reconstructing prehistoric demography from 14C data\nRandom sampling of 14C data using given probability distributions\nTest the sensitivity of a summed 14C proxy curve to population fluctuations\nDemographic signals can be separated from noise in summed 14C distributions using appropriate techniques\n'
+keywords: |
+  Prehistoric demography; Summed radiocarbon date distributions; Simulation; Calibration; Population proxies
+csl: ../templates/journal-of-computer-applications-in-archaeology.csl
+abstract: |
+  Sum calibration has become a standard tool for demographic studies, even though the methodology itself is far from uncontroversial. In addition to fundamental methodological criticism, questions are frequently raised about the sample size and data density required to detect large-scale changes in past populations. This article uses a simulation approach to determine the detection probabilities for events of varying intensity and with varying data density.  At the same time, the effectiveness of Monte Carlo-based confidence envelopes as a countermeasure against false-positive results is tested. The results show that the detection of such events is not unlikely and that the Monte Carlo method is well suited to separate signal and noise. However, the nature of the events already observed in this way demands further assessment.
+documentclass: paper
+classoption: a4paper
+geometry: "left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm"
+---
+
+```{r, setup, echo = FALSE, message=FALSE, warning=FALSE, error=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  comment = "#>",
+  fig.path = "../figures/"
+)
+
+table_caption <- function(tag, caption) {
+  if (is.null(knitr::opts_knit$get('rmarkdown.pandoc.to'))) {
+    cat("")
+  } else if (grepl("html", knitr::opts_knit$get('rmarkdown.pandoc.to'))) {
+    cat("<table style=\"width:100%;\"><caption>", 
+        "(\\#tab:", tag, ") ", caption, 
+        "</caption></table>", sep = "")
+  } else {
+    cat("Table: (\\#tab:", tag, ") ", caption, sep = "")
+    cat("", "", "+---------:+", 
+                "|          |", 
+                "+----------+", "", "", sep = "\n")
+  }
+}
+
+library(DiagrammeR)
+library(magrittr)
+library(ggplot2)
+library(reshape2)
+library(flextable)
+library(sensitivity.sumcal.article.2020)
+sensitivity.sumcal.article.2020::set_up_environment()
+```
+
+# Introduction
+
+In recent years, the use of more or less large collections of ^14^C data has almost become a standard tool as estimators for demographic developments of the past. The original approach of Rick [@rick_dates_1987] assumes that 'if archaeologists recovered and dated a random, known percentage of the carbon from a perfectly preserved carbon deposit to which each person-year of occupation contributed an equal and known amount, they could estimate the number of people who inhabited a region during a given period' [@rick_dates_1987, 56].
+
+There is a history of debate on the use of radiocarbon SPDs. Several authors use the method in different elaborations to identify past processes [most often demographic processes, eg. @armit_dates_2013; @buchanan_paleoindian_2008; @collard_population_2013; @gamble_archaeological_2005; @gkiasta_neolithic_2003; @hinz_demography_2012; @hoffmann_holocene_2008; @johnstone_development_2006; @kelly_continuous_2013; @mulrooney_island_wide_2013; @rick_dates_1987; @riede_climate_2009; @rieth_13th_2011; @shennan_prehistoric_2007; @shennan_evolutionary_2009; @shennan_demographic_2012; @tallavaara_prehistoric_2010; @timpson_reconstructing_2014; @whitehouse_neolithic_2014]. Others reject the method in general, criticise certain aspects or point out weaknesses [@ballenger_temporal_2011; @bamforth_radiocarbon_2012; @bayliss_bradshaw_2007; @bleicher_summed_2013; @chiverrell_cumulative_2011; @contreras_summed_2014; @crombe_14c_2014; @culleton_crude_2008; @prates_radiocarbon_2013; @steele_radiocarbon_2010; @surovell_note_2007; @surovell_correcting_2009; @torfing_neolithic_2015; @williams_use_2012]. A critical assessment is very helpful for improving a method or identifying its shortcomings. However, what many critics do not emphasize, and many supporters do not sufficiently consider, is that already in Ricks original paper [@rick_dates_1987, 57--59, fig. 1] the essential sources of error (Intervening, Creation, Preservation, and Investigation biases) have been identified.
+
+Due to the widespread use of the methodology in recent years, it is essential to explore the conditions for the meaningful use of sum calibration. Ideally, a catalogue of prerequisites and methodological requirements should be compiled providing a comparable and high standard for the usage of this estimator and a quantification of the uncertainty in its application. 
+
+This paper examines some of the objections with the help of simulations. This relates in particular to the methodological questions related to the sensitivity of the method as put forward by Contreras and Meadows [-@contreras_summed_2014]. Similar to that paper, it is examined whether ^14^C summations can be used to identify patterns that can be related to population fluctuations in the past. Thereby it is assumed that the amount of archaeological and thus datable material reflects those changes in particular. The sampling bias and its effects will be addressed. For this purpose, simulated and thus artificial ^14^C dates are generated, drawing from a probability curve based on a historical event – the Black Plague. For different data densities (average number of samples per year), a random sample of years is drawn from the period in question. The probability of each year corresponds to the relative demographic trend for the same year. This means, that the probability of drawing a sample from a particular date is exactly proportional to the population size in that year. The data simulated in this way is treated using Oxcal in the same way as the data is processed in existing studies (i.e. using Oxcal's `Sum` command). It is then checked whether the given patterns can be found in the calibration results. It should be noted that, as in the above-mentioned study, no further measures against other sources of error apart from the sampling bias are taken. Above all, no binning is used to standardise the data per site, which has now been established as a standard procedure. On the one hand, such an error does not exist in the simulated data, on the other hand, the method used should be as close as possible to that of the paper by Contreras and Meadows [-@contreras_summed_2014]. The main focus is on enriching the unquantified results of that study with a quantification of the detection probability.
+
+
+# Background
+
+```{r dependencies-chart, fig.cap="Interdependency between amount of information, intensity of pattern and desired uncertainity."}
+create_graph() %>%
+  add_node(label = "Number of Data") %>%
+  add_node(label = "Strength of Signal") %>%
+  add_node(label = "Certainity of Identification") %>%
+  select_nodes() %>% 
+  set_node_attrs_ws("shape", "rectangle") %>%
+  set_node_attrs_ws("fixedsize", "FALSE") %>%
+  set_node_attrs_ws("fontsize", "8") %>%
+  set_node_attrs_ws("color", "orange") %>%
+  set_node_attrs_ws("fillcolor", "orange") %>%
+  clear_selection() %>%
+  add_edges_w_string(edges = "1->2 2->3 3->1")%>%
+  select_edges() %>%
+  set_edge_attrs("color", "orange") %>%
+  set_edge_attrs("dir", "both") %>%
+  render_graph()
+```
+
+The potential of using SPDs to assert a statement about past (perhaps demographic) processes depends on three factors (see \@ref(fig:dependencies-chart)):
+
+* Amount of information available (number of data)
+* Intensity of the process to be identified (strength of the signal in the demographic fluctuation)
+* Certainty with which this signal is to be identified (or other, permitted uncertainty)
+
+If a very strong signal is to be detected, less data may be sufficient to be able to identify it with a specified uncertainty. Conversely, increased certainty about the validity of the signal requires either more data or a stronger signal. This means that strong demographic fluctuations in the past can be detected with greater certainty even based on smaller amounts of ^14^C datings, whereby more data would be required in the case of weaker fluctuations. These relationships are fundamental to any kind of statistical hypothesis test.
+
+```{r black-death-pattern, fig.cap="Population development during the time of the Black Plague, according to Contreras and Meadows [-@contreras_summed_2014]."}
+black_death <- read.csv(here::here('analysis/data/raw_data/black_death.csv'))
+ggplot(black_death, aes(x=x,y=Curve1)) + geom_line() + ylim(0,100) + theme_linedraw() + ylab("Population (millions)") + xlab("CE")
+
+```
+
+In their article, Contreras and Meadows [-@contreras_summed_2014] worked on this question. They put all other possible methodological problems to one side (although they did elaborate on them in detail) and investigated how well simulated demographic changes can be tracked by their effect on simulated ^14^C data. The paper went much further than others due to its simulation approach and its results are therefore largely transparent. This is a very valuable and useful contribution to the debate. Their main case study is the Black Plague, whose demographic influence can be adequately understood from written sources. They describe their demographic example as: 'In our population curve, after rising relatively steadily for the first three centuries of this period, population declined abruptly between AD 1310 (87 million) and 1350 (71 million), and further declined to 67 million by AD 1415, before recovering to 79 million(AD 1451) and finally overtaking its pre-Black Death peak in c. AD1550' [@contreras_summed_2014, comp. also Fig. \@ref(fig:black-death-pattern)] However, the details of the setting are irrelevant for the specific investigation, it could have been any arbitrary or randomly generated example. The chosen one serves the authors above all to show that such a devastating event as the Black Plague could remain undiscovered by ^14^C summations. 
+
+When using an over-representatively high number of data, or such a data density, with 1000 data for a period of 1000 -- 1700 BCE (density 1.43 data per year), the Black Plague would basically emerge [@contreras_summed_2014, fig. 3]. However, they argue that but the strength of the event in the resulting signal could not be attributed to such a disaster without prior knowledge [@contreras_summed_2014, 599]. At a density they consider to be closer to the archaeological reality – the authors assume this to be 0.29, representing 200 data for 700 years – the sampling effect would prevent the underlying demographic processes from being properly represented by the simulated ^14^C data [@contreras_summed_2014, fig. 6]. They write: 'Not only is the departure of these curves from the population distribution from which they are derived evident; the variability between samples is also notable: the most prominent fluctuations in each curve are not visible in most of the others' [@contreras_summed_2014, 601]. In general, the data density is decisive for the effectiveness of this estimator, whereby even with the maximum simulated number of dates (2000) the Black Death is 'far from obvious' as an event [@contreras_summed_2014, 602]. In addition, they argue, the temporal fixation of the event is problematic due to the scatter effect especially of legacy data with high standard deviation. Thus it would be not possible to separate signal from noise, to separate false-positive and false-negative from real results, and to identify the exact timing and magnitude of the underlying phenomenon [@contreras_summed_2014, 603--605]. In their concluding remarks they consequently state that 'even under ideal conditions, it is difficult to distinguish between real and spurious population patterns, or to accurately date sharp fluctuations, even with data densities much higher than in most published attempts' [@contreras_summed_2014, 605].
+
+With all the importance that the simulation approach adds to this paper, unfortunately, the authors do not use its full potential. Although creating different scenarios, each is only examine with five simulation runs (for 200, 1000 and 2000 samples respectively) [@contreras_summed_2014, 596]. Even if five is more than one, this certainly does not represent a statistically reliable basis for a far-reaching statement. In addition, they state as paraphrased above, that the Black Plague could have remained undetected, without further specification or quantification. A significantly higher number of simulations might be mandatory for such a statement.
+
+Precisely against this background the triangle of effect strength, data quantity and certainty of identification should be quantified here. Using the same basic pattern, the Black Plague, the aim is to determine, for different scenarios of effect strength and data quantity, in how many of cases such a demographic catastrophe could have remained undetected. It is primarily a question of false-negative results. False positives can be meaningfully detected by other simulation approaches, as it has been discussed elsewhere [eg. @shennan_regional_2013] and as it will be applied in a later step (see below).
+
+# Methods
+
+The overall approach and the implemented workflow consists of three main parts:
+
+1. The simulation of the ^14^C data from the underlying population curve,
+2. the identification of the signal from the resulting summation curve, and
+3. the combination of the results from the individual simulation runs.
+
+To simulate different densities of ^14^C dates, 18 scenarios were created (30--90 in steps of ten, 100--900 in steps of one hundred, 1000--2000 in steps of one thousand). For each scenario, 200 simulation runs were used. The whole process is controlled by a superimposed control structure.
+
+In the first part of the analysis, the original scenario of Contreras and Meadows [-@contreras_summed_2014] was reconstructed. The population curve was reconstructed and for different numbers of simulated samples, the signal was detected as described below. This process was repeated 200 times for each parameterization of the number of samples in order to obtain a statistical basis for the evaluation. The proportion of detected patterns was recorded, and the scenarios themselves were repeated 200 times to capture the range of variation between runs. This resulted in 720,000 individual simulation runs.
+
+The signal strength, i.e. the intensity with which the demographic signal decreases, is 77.4% in the 'real' data of the Black Plague. In the second part of the analysis, signal strengths of 30%-90% were simulated in steps of ten, respectively the data set of the Black Plague was changed in such a way that such a demographic change is predetermined by the data set. This results in a total of 126 scenarios. For each of the scenarios, 200 simulation runs were carried out, resulting in a total of 25,200 individual runs. The repetition of individual scenarios was omitted as this would have considerably increased the runtime of the algorithm.
+
+This process was repeated for both settings including the test against false positives as described below. In total, the whole simulation includes 1,490,400 individual sum calibrations. The choice for the final number of runs and repetitions resulted from the total run time, which was 94480 seconds or 26 hours and 15 minutes (using parallel computing on 6 cores of an Intel(R) Xeon(R) CPU E3-1240 v5 at 3.50GHz with 16 GB RAM). 
+
+## Simulation of the ^14^C dates
+
+For the simulation of the ^14^C data, the original curve from Contreras and Meadows [-@contreras_summed_2014] was used. The data was converted into numerical values by digitizing (using the software Engauge). The corresponding data set is attached as supplementary material or can be accessed in the reproducible analysis.
+
+The population numbers were then interpolated by linear approximation on an annual basis and converted into a probability distribution by normalization to the sum of 1. This distribution then served as weighting for a random drawing of calendar dates representing the individual sample. The sample size was defined as a scenario based on the given parameterisation (see above). In the second part of the analysis, this distribution was changed by parameterising the signal strength by linear rescaling in such a way that the drop from the peak before the demographic signal to the minimum of the curve corresponds to the given signal strength.
+
+The random years obtained in this way, whose frequency corresponds to the given population curve of the Black Plague, were then processed as a sum calibration using `C_Simulate` and `Sum` and calibrated via OxCal [using the package oxcAAR, @hinz_oxcaar_2018]. As already in [@contreras_summed_2014], the standard deviation was randomly sampled equally distributed in the range of 20-40 years.
+
+```{r example-smoothed-vs-unsmoothed, fig.cap="Comparing the same result of a random sum calibration unsmoothed (left) and smoothed (right) with a 2-sided smoothing window of total 500 years."}
+require(gridExtra)
+
+this_data <- sensitivity.sumcal.article.2020::read_input_data(path="../data/raw_data/") %>%
+    sensitivity.sumcal.article.2020::prepare_data()
+orig_signal_strength <- this_data$population_series$y[this_data$population_series$x == 1410] / this_data$population_series$y[this_data$population_series$x == 1310]
+
+n_date <- 200
+plot_collector <- list()
+
+this_sim_result <- simulate_dates(this_data, n_date, orig_signal_strength) %>%
+          sum_calibrate_simulated_dates()
+
+
+plot_collector[[1]] <- ggplot(smooth_sumcal_result(this_sim_result, 1), aes(x=dates,y=probabilities)) + geom_rect(aes(xmin=1310, xmax=1530, ymin=0, ymax=Inf), color="transparent", fill="orange", alpha=0.3) + geom_line() + theme_linedraw() + xlim(c(1000, 1800))
+
+plot_collector[[2]] <- ggplot(smooth_sumcal_result(this_sim_result, 50), aes(x=dates,y=probabilities)) + geom_rect(aes(xmin=1310, xmax=1530, ymin=0, ymax=Inf), color="transparent", fill="orange", alpha=0.3) + geom_line() + theme_linedraw() + xlim(c(1000, 1800))
+
+do.call("grid.arrange", c(plot_collector, ncol=2))
+```
+
+The smoothing of the resulting calibration result with a moving average, as suggested by [@williams_use_2012] with a window of 500 years minimum, was considered, but rejected again. The reason for this is that the more turbulent curve of the calibration result produces a more realistic scenario (see fig. \@ref(fig:example-smoothed-vs-unsmoothed)).
+
+## Detection of the signal
+```{r example-rejected, fig.cap="Four examples of rejected results (signal not detected) using the original signal strength and 200 dates."}
+rejected_sims <- 0
+max_tries <- 50
+i=0
+
+n_date <- 200
+plot_collector <- list()
+while( rejected_sims < 4 & i < max_tries ){
+  i=i+1
+  this_sim_result <- simulate_dates(this_data, n_date, orig_signal_strength) %>%
+          sum_calibrate_simulated_dates() %>%
+          smooth_sumcal_result(1)
+  this_sim_detected <- detect_pattern(this_sim_result)
+  if(!this_sim_detected) {
+    this_plot <- ggplot(this_sim_result, aes(x=dates,y=probabilities)) + geom_rect(aes(xmin=1310, xmax=1530, ymin=0, ymax=Inf), color="transparent", fill="orange", alpha=0.3) + geom_line() + theme_linedraw() + xlim(c(1000, 1800))
+    plot_collector <- c(plot_collector, list(this_plot))
+    rejected_sims <- rejected_sims + 1
+  }
+}
+
+do.call("grid.arrange", c(plot_collector, ncol=2))
+```
+
+```{r example-accepted, fig.cap="Four examples of accepted results (signal detected) using the original signal strength and 200 dates."}
+accepted_sims <- 0
+max_tries <- 50
+i=0
+
+plot_collector <- list()
+while( accepted_sims < 4 & i < max_tries ){
+  i=i+1
+  this_sim_result <- simulate_dates(this_data, n_date, orig_signal_strength) %>%
+          sum_calibrate_simulated_dates() %>%
+          smooth_sumcal_result(1)
+  this_sim_detected <- detect_pattern(this_sim_result)
+  if(this_sim_detected) {
+    this_plot <- ggplot(this_sim_result, aes(x=dates,y=probabilities)) + geom_rect(aes(xmin=1310, xmax=1530, ymin=0, ymax=Inf), color="transparent", fill="orange", alpha=0.3) + geom_line() + theme_linedraw() + xlim(c(1000, 1800)) 
+    plot_collector <- c(plot_collector, list(this_plot))
+    accepted_sims <- accepted_sims + 1
+  }
+}
+
+do.call("grid.arrange", c(plot_collector, ncol=2))
+```
+
+To achieve an automated detection of the signal in the calibration result, an algorithm was written which performs this task. The local minima between 1210 and 1630 were recorded and the strongest minimum was selected. If this was not in the period between 1310 and 1530, i.e. the minimum in the population curve of the Black Plague, the result was discarded as non-match. It was then tested whether this minimum was at least 10% below the mean of the 100 years preceding and following the event with a lag of 50 years. Only if this was the case the signal was considered as detected.  A selection of random examples of accepted and rejected calibration results can be found in Figure \@ref(fig:example-rejected) resp. \@ref(fig:example-accepted), or can be easily generated using the reproducible code itself.
+
+## Combination of the results
+
+The results of the individual runs were recorded and stored in tabular form. For the first part of the analysis, fixing the signal strength to the value corresponding to the original examination [@contreras_summed_2014], the number of detections per run, normalized to the total runs, was recorded. For the second part, since only one run with 200 repetitions was performed per scenario, only one value was recorded for each scenario.
+
+Accordingly, mean value, standard deviation, internal quartile and 95% interval can be calculated for the original scenario. For the second part, on the other hand, only one value per scenario is shown, but the influences of sample size and signal strength can be calculated individually.
+
+## Elimination of false positive results
+
+Shennan et al. [-@shennan_regional_2013] used a Monte Carlo simulation method that produces simulated data distributions under an adjusted null model. These are then used to test characteristics in the observed data set for statistically significant patterns. A large number of individual simulations are carried out using the null model as the population curve, similar to the simulation technique described above. The interval in which the simulated data ranges reflects the element of random sample distribution. Since the 5% significance boundary is set as the statistical standard, the 95% interval (i.e. the quantiles 0.025 and 0.975) is usually taken from the simulated data. A signal, to be evaluated as significant and thus 'real', must lie outside this fluctuation range.
+
+This approach, with slightly different settings, has since become established as the standard procedure for checking the patterns detected in sum calibrations. While, for example, Shennan et al. [-@shennan_regional_2013] uses an exponential generalized linear model for the null model, which is adapted to the data, a simpler approach is chosen here as in other publications [@hinz_chalcolithicbronze_2019]. The null model is a uniform distribution of the data within a specific time window. Thus, no assumption about a possible population development is made in advance, as would be the case with an exponential function in the sense of population growth. With this, I assume a stable population, and those events, which fall out of the hull generated by the simulation, can be considered as significantly different from this null model. A specific helper function is implemented in the package oxcAAR [@hinz_oxcaar_2018] (`oxcalSumSim()`), which can be used to easily perform such a simulation. It have to be noted that this function is based on `R_Simulate` of OxCal, and therefore shows rather wider uncertainty ranges than it would be necessary for `C_Simulate`. In the given context, this rather increases the robustness of the estimation.
+
+## Reproducible Research in Simulation studies
+
+Reproducibility has not yet become the standard for archaeological analysis. In many cases, the way archaeological data are collected prevents complete reproducibility of results, as an excavation can only be carried out once. However, in the case of derived, secondary analyses, reproducibility is clearly a preferable design consideration in any research. This is all the more true for simulation studies, which naturally rely on random effects and should therefore be reproducible in their parameterization and which also create the perfect conditions for such a research design regarding their data base.
+
+Unfortunately, especially in the field of summed ^14^C analyses, it is often the case that the argumentation relates on single observations or single calibration runs, i.e. only few results are presented pars pro toto. At the same time, the source code used to generate these numbers is usually not included in the paper and is also not accessible elsewhere. Therefore the results must be believed ab auctoritate. A listing of related papers is deliberately omitted here.
+
+If the source code is available or at least reconstructable [as in @contreras_summed_2014], a big step towards reproducibility has already been taken. In this article I try to go one step further and choose an Open Science approach in the sense of reproducible research [in the sense of @marwick_computational_2017]. The code underlying the simulations is made available together with the article, based on the package rrtools (https://github.com/benmarwick/rrtools). It is available as an R package (sensitivity.sumcal.article.2020) and can be obtained directly (https://github.com/MartinHinz/sensitivity.sumcal.article.2020) or from a repository (Zenodo). With this, all results should be easily reproducible and verifiable, especially the settings of the simulation should be available for direct verification.
+
+# Results
+```{r get-data, echo = FALSE}
+result <- readRDS(here::here('analysis/paper/result_data/result.rds'))
+```
+
+## Original Setup
+```{r echo=F}
+source("../../R/render_tables.R")
+```
+
+```{r orig-sim-result-table}
+render_orig_sim_result_table(result$orig_sim)
+```
+
+```{r results='asis'}
+table_caption("orig-sim-result-table", "Results from the simulation of the original setup of [@contreras_summed_2014].")
+```
+
+The results of the reproduction of the original scenario can be seen in Table \@ref(tab:orig-sim-result-table). For the situation of 1000 samples for 700 years described by the authors as super-ideal (results in a density of `r round(1000 / 700,2)`) a detection rate of `r round(mean(result$orig_sim["1000",]) * 100, 2)`% results. In half of the cases, the value was between `r round(quantile(result$orig_sim["1000",], c(0.25)) * 100, 2)`% and `r round(quantile(result$orig_sim["1000",], c(0.75)) * 100, 2)`%, 95% of the values lay between `r round(quantile(result$orig_sim["1000",], c(0.025)) * 100, 2)`% and `r round(quantile(result$orig_sim["1000",], c(0.975)) * 100, 2)`%.
+
+For the case of a sample size of 200 Contreras and Meadows [-@contreras_summed_2014, 601] estimated as realistic, the mean detection rate is `r round(mean(result$orig_sim["200",]) * 100, 2)`%, with the inner quartile between `r round(quantile(result$orig_sim["200",], c(0.25)) * 100, 2)`% and `r round(quantile(result$orig_sim["200",], c(0.75)) * 100, 2)`% and the 95% interval between `r round(quantile(result$orig_sim["200",], c(0.025)) * 100, 2)`% and `r round(quantile(result$orig_sim["200",], c(0.975)) * 100, 2)`%.
+
+Thus, the estimation of Contreras and Meadows [-@contreras_summed_2014] was not completely unjustified. The signal could have been overlooked, following the original simulation setup, with a probability of 1/3. The detection chance seems to be relatively independent of the sample size.
+
+```{r orig-sim-result-boxplot, fig.cap="The results of the simulation of the original setup with 100 runs for each number of samples, visualised as boxplot (comp. tab. \\@ref(tab:orig-sim-result-table))."}
+source("../../R/render_plots.R")
+render_orig_sim_result_boxplot(result$orig_sim)
+```
+
+```{r orig-sim-result-regression, fig.cap="The results of the simulation of the original setup with 100 runs for each number of samples, visualised as plot with smoothed trendline (comp. tab. \\@ref(tab:orig-sim-result-table)). Please note that the x-values are slightly jittered for better recognision of the individual dates, and the x-axis is logarithmic."}
+render_orig_sim_result_regression(result$orig_sim)
+```
+
+This can be seen in table \@ref(tab:orig-sim-result-table), more clearly perhaps from the box plot of the results (Fig. \@ref(fig:orig-sim-result-boxplot)) or the representation as regression (with logarithmic x-axis, Fig. \@ref(fig:orig-sim-result-regression)). Up to a sample size of about 300, corresponding to a density of `r round(300 / 700,2)` dates per year, the detection rate improves and then remains in a plateau.
+
+The results indicate that, on the one hand, there is a clear chance to detect an event like the Black Plague with a tool like sum-calibrated ^14^C data, if we leave aside the discussion of other methodological problems at this point. On the other hand, the sample size seems to have less influence on improving detection at some stage. Thus the systematic application of the simulation experiment of Contreras and Meadows [-@contreras_summed_2014] cannot confirm the interpretations that they themselves deduce from their results. In this setup, it is not the number of samples that leads to a significant improvement in the detection rate. It is true that the individual results of individual sum calibrations deviate significantly from the given curve of the underlying population. But through formalized detection with fixed parameters, it is still possible to detect events within the given time window with a relatively high probability. Before we turn to the question of what exactly these events represent and how well we can separate false positive from true positive results (section \@ref(results-with-testing-for-false-positive)), the influence of signal strength should be examined.
+
+## Altering Signal Strength
+
+```{r full-sim-result-table}
+render_full_sim_result_table(result$full_sim)
+```
+
+```{r results='asis'}
+table_caption("full-sim-result-table", "Results from the simulation of different signal strengths.")
+```
+
+In the second part of the analysis, the intensity of the signal, as described above, was parameterised differently in order to check the influence of a stronger or weaker signal and thus be able to predict the detection possibilities of demographic changes of different intensity. Figure (Fig. \@ref(fig:orig-sim-result-regression)) shows the mean detection rates for different scenarios. The signal strength originally used of `r round(orig_signal_strength * 100, 2)` corresponds most closely to 0.8 in this parameterisation, which in this simulation leads to an average detection rate of `r result$full_sim['200','0.8']` for 200 data or `r result$full_sim['1000','0.8']` for 1000 data. The results are therefore generally comparable with the reconstruction of the original simulation.
+
+```{r full-sim-result-regression, fig.cap="The results of the simulation of different signal strengths with 100 runs for each number of samples (comp. tab. \\@ref(tab:full-sim-result-table)). Please note that the x-axis is logarithmic."}
+render_full_sim_result_regression(result$full_sim)
+```
+
+It is obvious that the strength of the signal has a high influence on the detection rate (Fig. \@ref(fig:full-sim-result-regression)). Signals resulting from an underlying population reduced to 70% or less have a significantly higher detection rate, especially with higher sample numbers.
+
+
+```{r full_sim_result_linear_model, echo=FALSE}
+data_for_lm <- melt(result$full_sim)
+colnames(data_for_lm) <- c("nsamples", "signal_strength", "p_signal_detected")
+
+lm_sum <- summary(lm(p_signal_detected ~ nsamples + signal_strength, data = data_for_lm))
+
+lm_sum
+```
+
+If the relationship between detection rate, sample size and signal strength is considered a linear model, then both factors are significant predictors for the detection rate, signal strength (coefficient of `r format(lm_sum$coefficients[2,1], scientific = T, digits = 3)` with a significance of `r format(lm_sum$coefficients[2,4], scientific = T, digits = 3)`) is clearly more dominant than the sample size (coefficient of `r format(lm_sum$coefficients[3,1], scientific = T, digits = 3)` with a significance of `r format(lm_sum$coefficients[3,4], scientific = T, digits = 3)`).
+
+It can be seen that a signal strength of 90% (corresponds to a reduction of 10%) with a small number of samples also shows a detection rate of more than 50%. This is rather surprising since the minimum difference necessary for recognition in the detection algorithm is set to 0.1. It is also surprising that this detection rate drops significantly with larger sample sizes (Fig. \@ref(fig:full-sim-result-regression)). This is a strong indication that false-positive signals, which result exclusively from the random distribution of the data and not from the underlying pattern, are also counted here. This touches one of the key questions posed by Contreras and Meadows [-@contreras_summed_2014]: Is it possible to distinguish real signals from false positives? To evaluate this, in a third step the same analysis was performed with the inclusion of a confidence envelope for false-positive signals.
+
+## Results with testing for false positive
+
+```{r envelope-sim-result-table, fig.cap="A plot of random numbers"}
+render_full_sim_result_table(result$envelope_sim)
+```
+
+```{r results='asis'}
+table_caption("envelope-sim-result-table", "Results from the simulation of different signal strengths under consideration of the removal of false positive results.")
+```
+
+```{r envelope-sim-result-regression, fig.cap="The results of the simulation of different signal strengths with 100 runs for each number of samples under consideration of the removal of false positive results (comp. tab. \\@ref(tab:envelope-sim-result-table)). Please note that the x-axis is logarithmic."}
+render_full_sim_result_regression(result$envelope_sim)
+```
+
+In the same manner like the results above, Tab. \@ref(tab:envelope-sim-result-table) resp. Fig. \@ref(fig:envelope-sim-result-regression) visualise the effect of removal of false-positive pattern (section \@ref(elimination-of-false-positive-results)). In this version, the results for weak signals remain at a low level, while those for strong signals rise sharply from a sample size of about 200. For all signal strengths greater than 0.6, at the latest for a sample size of 300 or more, these exceed the 50% mark. This implies that this method produces a much more reliable result and is a strong indicator of the effectiveness of this approach. The overall detection rate is significantly reduced, and it becomes clear that for reliable identification of events a much higher sample size is necessary than if the possible false positives are naively ignored.
+
+```{r envelope-orig-sim-result-table}
+render_full_sim_result_table(result$envelope_orig_sim)
+```
+
+```{r results='asis'}
+table_caption("envelope-orig-sim-result-table", "Results from the simulation of the original setup of [@contreras_summed_2014] under consideration of the removal of false positive results.")
+```
+
+```{r envelope-orig-sim-result-regression, fig.cap="Results from the simulation of the original setup of [@contreras_summed_2014] under consideration of the removal of false positive results (comp. tab. \\@ref(tab:envelope-orig-sim-result-table)). Please note that the x-axis is logarithmic."}
+render_full_sim_result_regression(result$envelope_orig_sim)
+```
+
+Finally, this combined method was applied again to the original example of the Black Plague with its fixed signal strength. The table \@ref(tab:envelope-orig-sim-result-table) or Fig. \@ref(fig:envelope-orig-sim-result-regression) show the corresponding results. The scope of the sample size was extended upwards. Considering possible false-positive results, the detection rate for this pattern is quite low. For the scenario with 200 data, corresponding to a density of `r round(200 / 700,2)` per year, there is a detection rate of `r result$envelope_orig_sim['200',]`, for a sample size of 1000, corresponding to a density of `r round(1000 / 700,2)` per year, the detection rate reaches `r result$envelope_orig_sim['200',]`. Only with a sample size of 2000, (density = `r round(2000 / 700, 2)`), a more or less reliable identification can be assumed.
+
+# Discussion
+
+When using estimators for reconstructions, it is clear that in addition to the existing uncertainties, the variability in the relationship of the estimator to the estimated variable has to be considered. Therefore, it is unrealistic to expect a perfect reconstruction. Nevertheless, the question of Contreras and Meadows [-@contreras_summed_2014] is, of course, justified as to whether such a disruptive event as the Black Plague could have been recognised through this methodology. Therefore, the example is very well chosen and was used here for the same reason. The answer to this question must be 'yes', even if one has to limit, 'not in every case', or more precisely, 'with `r round(mean(result$orig_sim["200",]) * 100, 2)`% probability', given the original setup of their analysis.
+
+The other question raised by that paper is to what extent false positives can be distinguished from real signals. Here the approach of a hypothesis test based on bootstrapping was applied. This proved to be very capable of filtering out false positive signals due to their lower magnitude. On the other hand, when this parameterisation is applied, an average of 5% remains, which is not recognized as false positive. However, this is certainly by far an order of magnitude with which a science such as archaeology can operate, since very few approaches in our discipline offer 95 per cent confidence.
+
+The detection of the event cannot be assumed to be absolutely certain. To the question of false-positive detections, the method of producing a confidence interval by simulation of an equal distribution [e.g. @shennan_regional_2013; @hinz_chalcolithicbronze_2019] has been introduced into this simulation, going beyond the original setup of Contreras and Meadows. So if the question is how well we can identify this event, taking random fluctuations into account, the result is much more unfavourable. Only at a relatively high temporal density of ^14^C dates, a reliable detection becomes realistic.
+
+A false-negative result, or in other words a Type II error, might be considered less dramatic in the given situation than a Type I error where an event would be identified that is non-existent. While there is some serious discussion as to which type I error would be worse and if there are any worse errors at all - this affects situations in which a type II error would lead to wrong decisions regarding e.g. the safety of patient treatment [see e.g. @carlson_quantitative_2017, 169--170]. In this specific case, the methodology opens up the chance of detecting an event at the risk of not detecting it. In this instance, one should not assume that it may have been an uneventful period. This demands above all the necessity to not only reconstruct the past with one estimator but to validate different indicators mutually and to evaluate them in multi-proxy approaches.
+
+The results raise questions about the nature of the conclusions already made using ^14^C sum calibration. These results demonstrate distributions of ^14^C data on the temporal axis different from the results of random sampling processes. The simulation results in this study clearly support the assumption that the significance test based on a Monte Carlo simulation, in one form or another, is very well suited to filter out signals that only appear in the data due to sampling effects. Therefore, significant results are highly likely to show variations in the data background. The basic question is therefore not of a statistical nature, lies not in the insensitivity of the estimator himself, but rather in the fundamental methodological question of what information the absence of archaeological material at a certain period can provide us with. If, as in the case of the analysis of Shennan et al. [-@shennan_regional_2013], we see a reduction of 36% (signal strength of 0.64) and take it literally [estimated at @shennan_regional_2013, fig. 4, on 200 years rolling mean, with a peak at about 3500 BCE and a minimum at about 3000 BCE], is this a population change that we can assume to be realistic for a prehistoric population? If we take the estimates of [@muller_8_2015] into account, we are talking about 5 million people in Europe during this period. These would be reduced to about 3.2 million over 500 years. Another question is what true signal strength is indicated by an observed signal strength of 0.64, and how high the uncertainty range of such an estimate is. The latter estimate goes beyond the scope of this study but is an excellent question for another simulation-based study. 
+
+The main problem in using summation calibration as a means of demographic reconstruction is therefore not the statistical conditions. If the sample size and sensitivity are too small, there are possibilities in this domain to identify such problems and to counteract them if necessary. The main problem lies rather in the often biased distribution by the production of the data in studies often carried out with specific scientific objectives as well as in the fact that often quite different deposition processes are treated equally. This is the original approach of Rick [-@rick_dates_1987], in which the number of data was largely equated directly with the intensity of human activity, even when he has already identified these biases. Therefore it is necessary to find appropriate countermeasures and to establish a best-practise catalogue for such investigations. An assessement of how strong a signal can be detected with what data density can be a valuable first step in direction of such a standardisation.
+
+# Conclusion
+
+In this article a simulation approach was used to move beyond the simple statement 'the black plague could have remained undiscovered by ^14^C sum calibration' and to arrive at a quantification of the probability of detection and a prediction of the detection potential of other, more or less pronounced events. As a result, it could be shown that no guarantee can be given for detection by this method, but that the chances will outweigh the risks.
+
+# References 
+<!-- The following line ensures the references appear here for the MS Word or HTML output files, rather than right at the end of the document (this will not work for PDF files):  -->
+<div id="refs"></div>
+
+### Colophon
+
+This report was generated on `r Sys.time()` using the following computational environment and dependencies: 
+
+\tiny
+
+```{r colophon, cache = FALSE}
+# which R packages and versions?
+options(width = 120)
+devtools::session_info()
+```
+
+\normalsize
+
+The current Git commit details are:
+
+\tiny
+
+```{r github, cache = FALSE, size="tiny"}
+# what commit is this file at? 
+git2r::repository(here::here())
+```
+
+\normalsize
