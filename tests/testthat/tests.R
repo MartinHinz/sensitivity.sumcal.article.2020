@@ -2,12 +2,16 @@ context("General (Dummy) Test")
 
 test_that("run_analysis runs proper", {
   expect_error(
-    {n_run <- 2
-    path <- system.file("testdata", package = "sensitivity.sumcal.article.2020")
-    #stop(path)
-    set_up_environment()
-    this_data <- read_input_data(path, test = TRUE) %>%
-      prepare_data() %>%
-      make_the_simulations(n_run = n_run, test = TRUE)},
+    {run_analysis(n_run = n_run, test = TRUE)},
+    NA)
+})
+
+test_that("run_analysis runs proper", {
+  result <- readRDS(system.file("testdata", "result.rds", package = "sensitivity.sumcal.article.2020"))
+  expect_error(
+    {render_orig_sim_result_table(result$orig_sim)},
+    NA)
+  expect_error(
+    {render_full_sim_result_table(result$full_sim)},
     NA)
 })

@@ -42,12 +42,15 @@
 #'
 #' @export
 run_analysis <- function(n_run = 200, test=FALSE) {
+  path <- getwd()
   system.time({
     if (test) {
-      n_run = 2
+      n_run <- 2
+      path <- system.file("testdata", package = "sensitivity.sumcal.article.2020")
+      
     }
   set_up_environment()
-  this_data <- read_input_data(test = test) %>%
+  this_data <- read_input_data(path = path, test = test) %>%
     prepare_data() %>%
     make_the_simulations(n_run = n_run, test=test)
   })
