@@ -1,6 +1,6 @@
 Package: sensitivity.sumcal.article.2020
 Title: Sensitivity of Radiocarbon Sum Calibration
-Version: 0.0.0.9000
+Version: 1.0.0.0
 Authors@R:
     person(given = "Martin",
            family = "Hinz",
