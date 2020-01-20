@@ -62,7 +62,7 @@ Please cite this compendium as:
 
 > Authors, (2020). *Compendium of R code and data for Sensitivity of
 > Radiocarbon Sum Calibration*. Accessed 20 Jan 2020. Online at
-> <https://doi.org/xxx/xxx>
+> <https://doi.org/10.5281/zenodo.3613674>
 
 ### How to download or install
 
