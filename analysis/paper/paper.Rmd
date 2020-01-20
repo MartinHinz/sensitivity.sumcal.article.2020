@@ -9,20 +9,20 @@ institute:
   - iaw: Insitut für Archäologische Wissenschaften, Universität Bern
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
+  bookdown::pdf_document2:
+    toc: no
+    smart: yes
+    includes:
+        in_header: preamble.tex
+    pandoc_args:
+      - '--lua-filter=scholarly-metadata.lua'
+      - '--lua-filter=author-info-blocks.lua'
   bookdown::html_document2:
     fig_caption: yes
     reference_docx: ../templates/template.docx
   bookdown::word_document2:
     smart: yes
     reference_docx: ../templates/template.docx
-    pandoc_args:
-      - '--lua-filter=scholarly-metadata.lua'
-      - '--lua-filter=author-info-blocks.lua'
-  bookdown::pdf_document2:
-    toc: no
-    smart: yes
-    includes:
-        in_header: preamble.tex
     pandoc_args:
       - '--lua-filter=scholarly-metadata.lua'
       - '--lua-filter=author-info-blocks.lua'
@@ -239,7 +239,7 @@ Reproducibility has not yet become the standard for archaeological analysis. In 
 
 Unfortunately, especially in the field of summed ^14^C analyses, it is often the case that the argumentation relates on single observations or single calibration runs, i.e. only few results are presented pars pro toto. At the same time, the source code used to generate these numbers is usually not included in the paper and is also not accessible elsewhere. Therefore the results must be believed ab auctoritate. A listing of related papers is deliberately omitted here.
 
-If the source code is available or at least reconstructable [as in @contreras_summed_2014], a big step towards reproducibility has already been taken. In this article I try to go one step further and choose an Open Science approach in the sense of reproducible research [in the sense of @marwick_computational_2017]. The code underlying the simulations is made available together with the article, based on the package rrtools (https://github.com/benmarwick/rrtools). It is available as an R package (sensitivity.sumcal.article.2020) and can be obtained directly (https://github.com/MartinHinz/sensitivity.sumcal.article.2020) or from a repository (Zenodo). With this, all results should be easily reproducible and verifiable, especially the settings of the simulation should be available for direct verification.
+If the source code is available or at least reconstructable [as in @contreras_summed_2014], a big step towards reproducibility has already been taken. In this article I try to go one step further and choose an Open Science approach in the sense of reproducible research [in the sense of @marwick_computational_2017]. The code underlying the simulations is made available together with the article, based on the package rrtools (https://github.com/benmarwick/rrtools). It is available as an R package (sensitivity.sumcal.article.2020) and can be obtained directly (https://github.com/MartinHinz/sensitivity.sumcal.article.2020) or from a repository (Zenodo, doi: [10.5281/zenodo.3613674](https://doi.org/10.5281/zenodo.3613674)). With this, all results should be easily reproducible and verifiable, especially the settings of the simulation should be available for direct verification.
 
 # Results
 ```{r get-data, echo = FALSE}
