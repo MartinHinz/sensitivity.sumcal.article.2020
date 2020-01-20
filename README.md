@@ -1,13 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# sensitivity.sumcal.article.2020
+## Research compendium for ‘Sensitivity of Radiocarbon Sum Calibration’
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MartinHinz/sensitivity.sumcal.article.2020/master?urlpath=rstudio)
 [![Travis-CI Build
 Status](https://travis-ci.org/MartinHinz/sensitivity.sumcal.article.2020.svg?branch=master)](https://travis-ci.org/MartinHinz/sensitivity.sumcal.article.2020)
 
-This repository contains the data and code for our paper:
+This repository contains the data and code for the paper:
 
 > Authors, (YYYY). *Sensitivity of Radiocarbon Sum Calibration*. Name of
 > journal/book <https://doi.org/xxx/xxx>
@@ -17,6 +17,36 @@ Our pre-print is online here:
 > Authors, (YYYY). *Sensitivity of Radiocarbon Sum Calibration*. Name of
 > journal/book, Accessed 20 Jan 2020. Online at
 > <https://doi.org/xxx/xxx>
+
+### Abstract
+
+Sum calibration has become a standard tool for demographic studies, even
+though the methodology itself is far from uncontroversial. In addition
+to fundamental methodological criticism, questions are frequently raised
+about the sample size and data density required to detect large-scale
+changes in past populations. This article uses a simulation approach to
+determine the detection probabilities for events of varying intensity
+and with varying data density. At the same time, the effectiveness of
+Monte Carlo-based confidence envelopes as a countermeasure against
+false-positive results is tested. The results show that the detection of
+such events is not unlikely and that the Monte Carlo method is well
+suited to separate signal and noise. However, the nature of the events
+already observed in this way demands further assessment.
+
+### Highlights
+
+  - Simulations used to evaluate the possibility of reconstructing
+    prehistoric demography from 14C data
+  - Random sampling of 14C data using given probability distributions
+  - Test the sensitivity of a summed 14C proxy curve to population
+    fluctuations
+  - Demographic signals can be separated from noise in summed 14C
+    distributions using appropriate techniques
+
+### Keywords
+
+Prehistoric demography; Summed radiocarbon date distributions;
+Simulation; Calibration; Population proxies
 
 ### How to cite
 
@@ -38,6 +68,26 @@ sensitivity.sumcal.article.2020, from GitHub with:
 # install.packages("devtools")
 remotes::install_github("MartinHinz/sensitivity.sumcal.article.2020")
 ```
+
+### Overview of contents:
+
+This repository contains text, code and data for the paper. The
+`analysis` directory contains `code` and `data` to reproduce the
+preparations, calculations and figure renderings. The `article`
+directory contains the text for the paper in *.Rmd* format.
+
+### How to reproduce:
+
+As the data and code in this repository are complete and self-contained,
+it can be reproduced with any R environment (\> version 3.5.0). The
+necessary package dependencies are documented in the `DESCRIPTION` file
+and can be installed manually or automatically with
+`devtools::install()`.
+
+The simulation can then be run using the run\_simulation() command. The
+total run time was 94480 seconds or 26 hours and 15 minutes (using
+parallel computing on 6 cores of an Intel(R) Xeon(R) CPU E3-1240 v5 at
+3.50GHz with 16 GB RAM).
 
 ### Licenses
 
