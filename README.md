@@ -6,7 +6,9 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MartinHinz/sensitivity.sumcal.article.2020/master?urlpath=rstudio)
 [![Travis-CI Build
 Status](https://travis-ci.org/MartinHinz/sensitivity.sumcal.article.2020.svg?branch=master)](https://travis-ci.org/MartinHinz/sensitivity.sumcal.article.2020)
-[![codecov](https://codecov.io/github/MartinHinz/sensitivity.sumcal.article.2020/branch/master/graphs/badge.svg)](https://codecov.io/github/MartinHinz/sensitivity.sumcal.article.2020)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3613674.svg)](https://doi.org/10.5281/zenodo.3613674)
+[![codecov](https://codecov.io/github/MartinHinz/sensitivity.sumcal.article.2020/branch/master/graphs/badge.svg)](https://codecov.io/github/MartinHinz/sensitivity.sumcal.article.2020)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3613674.svg)](https://doi.org/10.5281/zenodo.3613674)
+[![PrePrint](https://img.shields.io/badge/SocArXiv-bgvk6-green)](https://osf.io/preprints/socarxiv/bgvk6/)
 
 This repository contains the data and code for the paper:
 
@@ -18,6 +20,11 @@ The pre-print is online here:
 > Hinz, (2020). *Sensitivity of Radiocarbon Sum Calibration*. SocArXiv,
 > Accessed 20 Jan 2020. Online at
 > <https://osf.io/preprints/socarxiv/bgvk6>
+
+### Author
+
+[![ORCiD](https://img.shields.io/badge/ORCiD-0000--0002--9904--6548-green.svg)](http://orcid.org/0000-0002-9904-6548)
+Martin Hinz (<martin.hinz@iaw.unibe.ch>)
 
 ### Abstract
 
