@@ -66,7 +66,7 @@ remotes::install_github("MartinHinz/sensitivity.sumcal.article.2020")
 
 ### Overview of contents:
 
-This repository contains text, code and data for the paper. The `analysis` directory contains `paper` and `data` to reproduce the preparations, calculations and figure renderings. The `paper` directory contains the text for the paper in *.Rmd* format, and rendered versions as pdf, html and docx. It also contains a directory `result_data` which holds the results from the submitted version of the paper.
+This repository contains text, code and data for the paper. The `analysis` directory contains `paper` and `data` to reproduce the preparations, calculations and figure renderings. The `paper` directory contains the text for the paper in *.Rmd* format, and rendered versions as pdf, html and docx. It also contains the reviews and the revised version in specified subfolders, as well as a directory `result_data` which holds the results from the submitted version of the paper.
 
 ### How to reproduce:
 
