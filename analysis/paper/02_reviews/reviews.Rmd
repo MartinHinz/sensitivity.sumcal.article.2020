@@ -1,0 +1,162 @@
+---
+title: "Reviews"
+author: "Martin Hinz"
+date: "16 6 2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Reviews
+
+## Reviewer A:
+
+1. Relevance of the topic for the journal
+To what degree does the submission fit within the scope of the journal and does the paper subject fit the domains made publicly available on the JCAA website? *:
+Excellent
+
+2. Originality
+Please consider the originality of the submission. While all research builds upon existing knowledge and evidence, do you believe this submission progresses knowledge on this subject? Are there original findings, or do conceptual arguments provide a somewhat new perspective on established thinking? Select one of the options below, and feel free to elaborate in the comment box. *:
+Excellent
+
+Comments: *:
+See attachment
+
+3. Framing of the Research question
+Please consider the way in which the research question is framed. Do you find the research question clearly formulated, and is it properly addressed in the rest of the article? Is the research question supported by an adequate discussion of the state-of-the-art in the field? Are previous research efforts by the author(s), if applicable, properly referenced? *:
+Good
+
+Comments: *:
+See attachment
+
+4. Research design and methods
+Please examine the methodologies used and their appropriateness, and the author’s use of the evidential base. Is there enough reference to methodology and are the arguments fully evidenced and substantiated? Are the methodology and data sources noted in the article, and are methodological weaknesses addressed? Assess the clarity and overall appropriateness of the methodology, keeping in mind that different criteria may be applied in assessing empirical versus more theoretical or conceptual articles. Overall, do you find the methodology appropriate for the subject matter being examined in the submission and is the submission scientifically sound? *:
+Good
+
+Comments: *:
+See attachment
+
+5. Discussion and conclusions
+Does the conclusion reflect the argument in the main body text, is it supported by factual data, and does it bring something new to the debate? Does the introduction signpost the arguments and does the conclusion adequately summarise them? Please expand in the text box. *:
+Good
+
+Comments: *:
+See attachment
+
+
+6. Clarity and structure of the writing
+Do you find the writing to be clear and structured in a logical manner? Please keep in mind that, if an article is accepted, we will work with the author to strengthen the prose and structure. In the comment box, please offer suggestions for strengthening the writing AND/OR the structure of the piece. Please add your comments in the text box. *:
+Good
+
+Comments: *:
+See attachment
+
+7. Bibliography
+Please comment on the adequacy of the author’s referencing and whether or not the existing knowledge base has been explored and built upon. *:
+Excellent
+
+Comments: *:
+See attachment
+
+8. Figures, tables and other additional materials
+Please comment on the author’s use of tables, charts, figures or maps – their relevance in terms of illustrating the arguments and supporting the evidential base, the quality of the formatting and presentation. *:
+Fair
+
+Comments: *:
+See attachment
+
+9. Additional feedback for the authors *:
+See attachment
+
+### Attachment
+
+Review of “Sensitivity of Radiocarbon Sum Calibration” by Hinz
+
+This paper offers a valuable contribution to the literature by extending the analyses of Contreras and Meadows. The results are useful in the way that they illustrate the reliability of the population-crash detection process by summed probability distributions. They are limited in that only one, fairly short time-scale is explored. The author might comment on the applicability of this to, for example, detecting a population crash in the late Neolithic. In general I am positive about this paper and find it acceptable, however there are some misunderstandings of the statistics involved that require some rewriting before it if suitable for publication. I will mostly comment on these.
+
+My fundamental issue with this paper is that it does not recognise that estimating the detection rate is fundamentally estimating a probability from a binomial count. Lines 151-153 indicate rather vaguely that 200 batches of 200 simulations were performed; I only understood this by looking at the code. In Table 1 the standard deviation, inner quartiles and 95% quantiles are simply dependent on the size of the batches (200) and underlying true detection rate. The standard deviation of a binomial estimate expressed as percentage is 100*sqrt(pq/(n+1)). For n=200 and values of p from 61.1% to 72.8%, the sd ranges 3.44% to 3.14%, very close to what is reported empirically, especially as the latter will also include some noise as it is simulated. 200 batches of 200 simulations doesn’t tell us anything more than 40000 simulations on their own. For a given scenario, columns 4-6 of Table 1 will vary with batch size in a way that is predictable once the success rate is known. With n=40000 the s.d. is about 0.23% to 0.24% here. For the later simulations with n=100, the s.d. will not be more than 5%.
+Consequently parts of the discussion (lines 273-4, 276-7) and presentation (sizes of boxes and whiskers in Fig.6, scatter of points in Fig.7) are not relevant as these are simply functions of the chosen batch size.
+With se of the estimate at 0.2% only the first decimal place should be reported in all the estimated percentages, or third decimal place if using proportions. Table 1 uses percentages but Tables 2 and 3 use proportions – this should be made consistent and proportions would be better.
+Lines 345 and 346: this is not ‘significance’ (which is either there or not) but a p-value from which we decide on significance.
+
+Other comments
+Lines 148-154: what are scenarios in the plural here? The start of the paragraph says it is using the single scenario of Contreras & Meadows. 
+Lines 200-203: it would be useful to have these date ranges marked on Figures 4 and 5.
+Lines 204-205: ‘It was then tested whether this minimum was at least 10% below the mean of the 100 years preceding and following the event with a lag of 50 years’  I don’t understand what this means. Is it that, for example, if the minimum is at 1400 it is compared to the means of 1250-1350 and 1450-1550?
+Line 280 seems to be in error stating ‘detection chance seems to be relatively independent of the sample size’, as line 291-3 states ‘Up to a sample size of about 300 … the detection rate improves and then remains in a plateau’ and this is clear in Fig.7
+In figures 6 and 7 why is there switch to 100 simulation rather than the 200 of Table 1?
+The code at lines 323-342 is not necessary in the main text and could go in an appendix
+Line 394: 68.88% is not justified and no one is interested in knowing the success rate to this precision. 69% will do.
+
+Minor corrections
+Figure 1 contains a typographic error: ‘certanity’ should be ‘certainty’
+Line 364: replace ‘resp.’ with ‘and’
+Table 4: what is the heading ‘0.7780607003145’?
+Line 379: ‘The table 4 or Fig. 10’ should be ‘Table 4 and Fig. 10’
+Line 448: ‘assessement’ should be ‘assessment’
+
+
+------------------------------------------------------
+## Reviewer D:
+
+1. Relevance of the topic for the journal
+To what degree does the submission fit within the scope of the journal and does the paper subject fit the domains made publicly available on the JCAA website? *:
+Excellent
+
+2. Originality
+Please consider the originality of the submission. While all research builds upon existing knowledge and evidence, do you believe this submission progresses knowledge on this subject? Are there original findings, or do conceptual arguments provide a somewhat new perspective on established thinking? Select one of the options below, and feel free to elaborate in the comment box. *:
+Good
+
+Comments: *:
+It probably should be noted that McLaughlin 2019 undertook a similar simulation experiment with the Contreras and Meadows black death case study, using KDEs of radiocarbon (with a 94% detection rate). The influence of sample size and the risk of false positives were not however addressed, so this new paper can be seen as significant progress
+
+3. Framing of the Research question
+Please consider the way in which the research question is framed. Do you find the research question clearly formulated, and is it properly addressed in the rest of the article? Is the research question supported by an adequate discussion of the state-of-the-art in the field? Are previous research efforts by the author(s), if applicable, properly referenced? *:
+Excellent
+
+Comments: *:
+The paper achieves an excellent overview of the state of the art
+
+4. Research design and methods
+Please examine the methodologies used and their appropriateness, and the author’s use of the evidential base. Is there enough reference to methodology and are the arguments fully evidenced and substantiated? Are the methodology and data sources noted in the article, and are methodological weaknesses addressed? Assess the clarity and overall appropriateness of the methodology, keeping in mind that different criteria may be applied in assessing empirical versus more theoretical or conceptual articles. Overall, do you find the methodology appropriate for the subject matter being examined in the submission and is the submission scientifically sound? *:
+Excellent
+
+Comments: *:
+This paper sets new standards reproducibility and transparency in research of this kind. The only issue is perhaps the use of Oxcal as the calibration and summing engine, which is closed-source. Whilst the fact that Oxcal is producing reliable results is without question, the open source subtext of the article would be enhanced by adopting one of the open-source alternatives.
+
+An useful analytical step not undertaken in the current paper (but was one of the issues discussed by Contreras and Meadows) would be the transposition of the black death signal to a different region of time, to check that the signal detection results are robust against artifacts in the calibration curve
+
+5. Discussion and conclusions
+Does the conclusion reflect the argument in the main body text, is it supported by factual data, and does it bring something new to the debate? Does the introduction signpost the arguments and does the conclusion adequately summarise them? Please expand in the text box. *:
+Excellent
+
+Comments: *:
+The paper is a very useful and timely and advances the debate. I would consider revising the final sentence into something more unequivocally positive !
+
+6. Clarity and structure of the writing
+Do you find the writing to be clear and structured in a logical manner? Please keep in mind that, if an article is accepted, we will work with the author to strengthen the prose and structure. In the comment box, please offer suggestions for strengthening the writing AND/OR the structure of the piece. Please add your comments in the text box. *:
+Excellent
+
+Comments: *:
+Writing is excellent; there are a couple of typos L239-240 'It have to be noted' and L255 'ab auctoritate'.
+
+7. Bibliography
+Please comment on the adequacy of the author’s referencing and whether or not the existing knowledge base has been explored and built upon. *:
+Excellent
+
+Comments: *:
+The author should probably comment on Edinborough et al 2017 PNAS hypothesis test for short term events in archaeological radiocarbon
+
+8. Figures, tables and other additional materials
+Please comment on the author’s use of tables, charts, figures or maps – their relevance in terms of illustrating the arguments and supporting the evidential base, the quality of the formatting and presentation. *:
+Excellent
+
+Comments: *:
+The figures are well crafted, the tables useful, and more than anything else the supporting information is phenomenally well resolved. This includes a zenodo repository containing an entire pre-packaged Rstudio workspace containing all the tools needed to reproduce the analysis, and an R markdown that reproduces the text of the paper incorporating the analysis. Fantastic !
+
+9. Additional feedback for the authors *:
+I note that the CAA aim for double-blind review but as the author of this paper has divulged his identity I certainly don't mind signing this review either -- $\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare$ $\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare\blacksquare$
