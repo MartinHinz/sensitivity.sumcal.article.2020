@@ -29,7 +29,8 @@ Imports:
     grid,
     reshape2,
     scales,
-    Rdpack
+    Rdpack,
+    webshot
 RdMacros: Rdpack
 Suggests:
     bookdown,
