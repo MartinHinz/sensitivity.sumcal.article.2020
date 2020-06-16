@@ -24,8 +24,8 @@ render_orig_sim_result_table <- function(this_data) {
   table_out <- tibble::tibble(
     "number of samples" = n_samples,
     "sample density (per years)" = sample_density %>% round(digits = 3),
-    "mean percent signal detected" = mean_perc_sig_detect %>% round(digits = 3),
-    "standard deviation percent signal detected" =   sd_perc_sig_detect %>% round(digits = 3),
+    "mean proportion signal detected" = (mean_perc_sig_detect / 100) %>% round(digits = 3),
+    "standard deviation proportion signal detected" =   (sd_perc_sig_detect / 100) %>% round(digits = 3),
     "inner quartiles" = inner_quartile_perc_sig_detect,
     "95% quantiles" = interval_95
   )
